@@ -1,4 +1,4 @@
-from django.contrib import admin
+git commit -m ".gitignore is now working"from django.contrib import admin
 
 from .models import Question
 from .models import Choice
