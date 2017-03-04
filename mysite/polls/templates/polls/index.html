@@ -15,7 +15,7 @@
     <tr>
         <th>{{ question.question_text }}</th>
         <th>{{ question.pub_date }}</th>
-        <td><a href="{% url 'poll_detail' question.pk %}">詳細画面へ</a></td>
+        <td><a href="{% url 'polls:detail' question.pk %}">詳細画面へ</a></td>
     </tr>
     {% endfor %}
 </table>
