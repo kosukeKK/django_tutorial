@@ -1,9 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Question
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from .models import Choice
+from .models import Question
+from .forms import MyForm
+from .forms import VoteForm
 
 def index(request):
     return render(request, 'polls/index.html', {
@@ -12,7 +14,15 @@ def index(request):
 
 def detail(request, pk):
     obj = get_object_or_404(Question, pk=pk)
+    if request.method == "POST":
+        form = VoteForm(question=obj, data=request.POST)
+        if form.is_valid():
+            # TODO: 投票処理
+            return redirect('polls:results', pk)
+    else:
+        form = VoteForm(question=obj)
     return render(request, 'polls/detail.html', {
+        'form': form,
         'question': obj,
     })
 
@@ -28,10 +38,21 @@ def vote(request, pk):
     else:
         selected_choice.votes += 1
         selected_choice.save()
-        return redirect('poll_results', pk)
+        return redirect('polls:results', pk)
 
 def results(request, pk):
     obj = get_object_or_404(Question, pk=pk)
     return render(request, 'polls/results.html', {
         'question': obj,
+    })
+
+def form_test(request):
+    if request.method == "POST":
+        form = MyForm(data=request.POST)
+        if form.is_valid():
+            pass
+    else:
+        form = MyForm()
+    return render(request, 'polls/form.html', {
+        'form': form,
     })
